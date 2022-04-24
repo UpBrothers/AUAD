@@ -1,50 +1,78 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+  <v-app id="inspire">
+    <v-app-bar app color="white" flat hide-on-scroll>
+      <v-avatar
+        :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
+        size="32"
+      ></v-avatar>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-tabs centered class="ml-n9" color="grey darken-1">
+        <v-tab v-for="(link, i) in links" :to="link.path" :key="i">
+          {{ link.title }}
+        </v-tab>
+      </v-tabs>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-avatar
+        class="hidden-sm-and-down"
+        color="grey darken-1 shrink"
+        size="32"
+      ></v-avatar>
     </v-app-bar>
 
-    <v-main>
+    <v-main class="grey lighten-3">
       <router-view />
+
+      <v-speed-dial
+        v-model="fab"
+        bottom
+        right
+        transition="slide-y-reverse-transition"
+        fixed
+      >
+        <template v-slot:activator>
+          <v-btn v-model="fab" color="blue darken-2" dark fab>
+            <v-icon v-if="fab"> mdi-close </v-icon>
+            <v-icon v-else> mdi-plus </v-icon>
+          </v-btn>
+        </template>
+
+        <v-btn fab dark small color="green" @click="dialog[0] = true">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+
+        <v-btn fab dark small color="indigo" @click="dialog[1] = true">
+          <v-icon>mdi-file-document-edit</v-icon>
+        </v-btn>
+      </v-speed-dial>
+
+      <NewPostDialog :dialog="dialog[0]" @close="dialog[0] = false" />
+
+      <NewSurveyDialog />
     </v-main>
   </v-app>
 </template>
 
 <script>
+import NewPostDialog from "@/components/NewPostDialog";
+import NewSurveyDialog from "@/components/NewSurveyDialog";
+
 export default {
   name: "App",
 
+  components: {
+    NewPostDialog,
+    NewSurveyDialog,
+  },
+
   data: () => ({
-    //
+    links: [
+      { title: "Dashboard", path: "/Dashboard" },
+      { title: "Messages", path: "/Messages" },
+      { title: "Profile", path: "/Profile" },
+      { title: "Updates", path: "/Updates" },
+    ],
+    fab: false,
+    dialog: [false, false],
   }),
 };
 </script>
