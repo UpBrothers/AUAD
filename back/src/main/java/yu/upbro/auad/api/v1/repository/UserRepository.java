@@ -8,6 +8,6 @@ import yu.upbro.auad.api.v1.entity.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, ObjectId> {
-    Optional<User> findByStudentId(String Id);
+public interface UserRepository extends MongoRepository<User, String> {
+    Optional<User> findByStudentId(String studentId);
 }
