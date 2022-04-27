@@ -19,7 +19,7 @@ public class LoginService {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
-    LoginService(UserRepository userRepository){
+    public LoginService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
@@ -36,7 +36,7 @@ public class LoginService {
         User user = User.builder()
                 .name(signUpDTO.getName())
                 .studentId(signUpDTO.getStudentId())
-                .pwd(signUpDTO.getPwd())
+                .pwd(signUpDTO.getPwd()) // TODO pwd Encryption
                 .type(signUpDTO.getType())
                 .build();
 

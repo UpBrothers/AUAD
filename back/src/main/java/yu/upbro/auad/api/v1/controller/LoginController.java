@@ -1,5 +1,6 @@
 package yu.upbro.auad.api.v1.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import yu.upbro.auad.api.v1.dto.request.user.SignUpDTO;
 import yu.upbro.auad.api.v1.entity.User;
 import yu.upbro.auad.api.v1.service.LoginService;
 
+@Api(value = "사용자 API", tags = {"User API"})
 @RestController
 @RequestMapping(path = "/api/v1/user")
 public class LoginController {
