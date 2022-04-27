@@ -1,5 +1,6 @@
 package yu.upbro.auad.api.v1.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -16,11 +17,12 @@ import java.util.List;
 @Builder
 public class Board {
     private User owner;
-
     @Id
-    private ObjectId _id;
+    private String _id;
     private String title;
     private String context;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date date;
     private List<String> images;
 

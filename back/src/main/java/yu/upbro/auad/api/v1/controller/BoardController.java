@@ -22,12 +22,10 @@ public class BoardController {
     private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     private final BoardService boardService;
-//    private final LoginService loginService;
 
     @Autowired
-    public BoardController(BoardService boardService /*, LoginService loginService */){
+    public BoardController(BoardService boardService){
         this.boardService = boardService;
-//        this.loginService = loginService;
     }
 
     @GetMapping(path = "/{boardId}")
@@ -48,6 +46,7 @@ public class BoardController {
 //            @RequestParam
 //                BoardFilterDTO boardFilterDTO
     ){
+        // TODO Pagination
         logger.info("[selectBoardList] pageNum : {}, boardType : {}"
                 /* ,boardFilterDTO.getCount(), boardFilterDTO.getBoardType() */ );
 
@@ -60,7 +59,7 @@ public class BoardController {
     @ApiOperation(value = "글 등록")
     public ResponseEntity insertBoard(
             @RequestBody
-            @ApiParam(value="글 등록/수정 DTO", required = true)
+            @ApiParam(value="글 등록 DTO", required = true)
                     BoardUpdateDTO boardUpdateDTO
     ){
         logger.info("[writeBoard] title : {} , context : {}, [images].size() : {} ",
@@ -69,5 +68,34 @@ public class BoardController {
         Board board = boardService.insertBoard(boardUpdateDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(board);
+    }
+
+    @PutMapping(path="/")
+    @ApiOperation(value = "글 수정")
+    public ResponseEntity updateBoard(
+            @RequestBody
+            @ApiParam(value="글 수정 DTO", required = true)
+                    BoardUpdateDTO boardUpdateDTO
+    ){
+        logger.info("[updateBoard] boardUpdateDTO : {}", boardUpdateDTO);
+
+        Board board = boardService.updateBoard(boardUpdateDTO);;
+
+        return ResponseEntity.status(HttpStatus.OK).body(board);
+    }
+
+    @DeleteMapping(path="/")
+    @ApiOperation(value= "글 삭제")
+    public ResponseEntity deleteBoard(
+            @RequestBody // token
+                    String boardId,
+            @RequestBody
+                    String studentId
+    ){
+        logger.info("[deleteBoard] BOARD NO.{} / {}", boardId);
+
+        boardService.deleteBoard(boardId, studentId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
     }
 }

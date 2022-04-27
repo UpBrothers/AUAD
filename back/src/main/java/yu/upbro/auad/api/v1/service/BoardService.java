@@ -1,15 +1,13 @@
 package yu.upbro.auad.api.v1.service;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import yu.upbro.auad.api.v1.dto.request.board.BoardDTO;
-import yu.upbro.auad.api.v1.dto.request.board.BoardFilterDTO;
 import yu.upbro.auad.api.v1.dto.request.board.BoardUpdateDTO;
 import yu.upbro.auad.api.v1.entity.Board;
 import yu.upbro.auad.api.v1.entity.User;
+import yu.upbro.auad.api.v1.entity.type.UserType;
 import yu.upbro.auad.api.v1.repository.BoardRepository;
 import yu.upbro.auad.api.v1.repository.UserRepository;
 
@@ -37,17 +35,18 @@ public class BoardService {
     }
 
     public List<Board> selectBoardList(){
+        // TODO Pagination
         return boardRepository.findAll();
     }
 
     public Board insertBoard(BoardUpdateDTO boardUpdateDTO){
         // TODO findByStudentID by HTTP Header's user token -> not found USER
         // throw new UserNotFoundException;
-        User user = userRepository.findByStudentId(boardUpdateDTO.getOwner())
+        User user = userRepository.findByStudentId(boardUpdateDTO.getStudentId())
                 .orElseThrow(RuntimeException::new); // TODO NotFoundUser Exception Handling
 
-        // if ( user.getUserType != ADMIN ) -> Failed;
-        // throw new Forbidden Exception;
+        if(user.getType() != UserType.ADMIN)
+            throw new RuntimeException(); // ForbiddenException
 
         Board board = Board.builder()
                 .title(boardUpdateDTO.getTitle())
@@ -59,17 +58,31 @@ public class BoardService {
         return boardRepository.save(board);
     }
 
-    public Board modifyBoard(BoardDTO boardDTO){
-        //
-
-        Board board = boardRepository.findById(boardDTO.getBoardId())
+    public Board updateBoard(BoardUpdateDTO boardUpdateDTO){
+        Board board = boardRepository.findById(boardUpdateDTO.getBoardId())
                 .orElseThrow(RuntimeException::new);
         // TODO NotFoundBoardException;
 
-        // TODO boardDTO's user == Board's user
-        // throw new NotOwnerException
-
-        board.setTitle(boardDTO.getBoardId());
+        logger.info("Board Owner : {} , Request User : {}", board.getOwner(), boardUpdateDTO.toString());
+        if(!board.getOwner().getStudentId().equals(boardUpdateDTO.getStudentId())){ // TODO Compare HTTP Header by using Token
+            throw new RuntimeException();
+            // TODO Forbidden Exception;
+        }
+        board.setTitle(boardUpdateDTO.getTitle());
+        board.setContext(boardUpdateDTO.getContext());
+        // board.setImages(boardUpdateDTO.getImage());
         return boardRepository.save(board);
+    }
+
+    public void deleteBoard(String boardId, String studentId){
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(RuntimeException::new); // Not Found Exception
+
+        if(board.getOwner().getStudentId().equals(studentId)){ // TODO Compare HTTP Header by using Token
+            throw new RuntimeException();
+            // TODO Forbidden Exception;
+        }
+
+        boardRepository.deleteById(boardId);
     }
 }

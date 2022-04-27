@@ -3,8 +3,6 @@ package yu.upbro.auad.api.v1.dto.request.board;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
-import yu.upbro.auad.api.v1.entity.User;
 
 import java.util.List;
 
@@ -12,10 +10,10 @@ import java.util.List;
 @ApiModel("게시물 Update DTO")
 public class BoardUpdateDTO {
 
-    @ApiModelProperty(name="owner", notes = "게시물 작성자")
-    private String owner;
+    @ApiModelProperty(name="studentId", notes = "게시물 작성자", example="21611748")
+    private String studentId;
 
-    @ApiModelProperty(name="boardId", notes = "게시물 PK ( 12byte )")
+    @ApiModelProperty(name="boardId", notes = "게시물 PK ( HEX ), Length : 24 )")
     private String boardId;
 
     @ApiModelProperty(name="title", notes = "게시물 제목")
@@ -24,7 +22,6 @@ public class BoardUpdateDTO {
     @ApiModelProperty(name="context", notes = "게시물 본문")
     private String context;
 
-    // @ApiModelProperty(name="images", notes = "게시물 등록 이미지 List")
-    // private List<MultipartFile> images;
-    // TODO ImageMultiFile처리
+    @ApiModelProperty(name="images", notes = "게시물 등록 이미지 List")
+    private List<String> images;
 }
