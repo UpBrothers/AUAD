@@ -3,6 +3,7 @@ package yu.upbro.auad.api.v1.dto.request.board;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,5 +24,7 @@ public class BoardUpdateDTO {
     private String context;
 
     @ApiModelProperty(name="images", notes = "게시물 등록 이미지 List")
-    private List<String> images;
+    private List<MultipartFile> images;
+
+    private List<String> imageLinks;
 }

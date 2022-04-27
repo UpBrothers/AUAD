@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import yu.upbro.auad.api.v1.dto.request.board.BoardFilterDTO;
+import org.springframework.web.multipart.MultipartFile;
 import yu.upbro.auad.api.v1.dto.request.board.BoardUpdateDTO;
 import yu.upbro.auad.api.v1.entity.Board;
+import yu.upbro.auad.api.v1.exception.BadRequestException;
 import yu.upbro.auad.api.v1.service.BoardService;
-import yu.upbro.auad.api.v1.service.LoginService;
+import yu.upbro.auad.api.v1.util.S3Uploader;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Api(value = "게시물 API", tags = {"Board API"})
@@ -22,10 +25,12 @@ public class BoardController {
     private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     private final BoardService boardService;
+    private final S3Uploader s3Uploader;
 
     @Autowired
-    public BoardController(BoardService boardService){
+    public BoardController(BoardService boardService,S3Uploader s3Uploader){
         this.boardService = boardService;
+        this.s3Uploader = s3Uploader;
     }
 
     @GetMapping(path = "/{boardId}")
@@ -58,12 +63,20 @@ public class BoardController {
     @PostMapping(path = "/")
     @ApiOperation(value = "글 등록")
     public ResponseEntity insertBoard(
-            @RequestBody
             @ApiParam(value="글 등록 DTO", required = true)
                     BoardUpdateDTO boardUpdateDTO
     ){
         logger.info("[writeBoard] title : {} , context : {}, [images].size() : {} ",
                 boardUpdateDTO.getTitle(), boardUpdateDTO.getContext() /*, boardUpdateDTO.getImages().size()*/);
+
+        List<String> imageList;
+        try {
+            imageList = s3Uploader.upload(boardUpdateDTO.getImages(), new Date().toString());
+        } catch (IOException e) {
+            // TODO Exception Handling
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미지 업로드 실패");
+        }
+        boardUpdateDTO.setImageLinks(imageList);
 
         Board board = boardService.insertBoard(boardUpdateDTO);
 

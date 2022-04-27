@@ -53,6 +53,7 @@ public class BoardService {
                 .context(boardUpdateDTO.getContext())
                 .date(new Date())
                 .owner(user)
+                .images(boardUpdateDTO.getImageLinks())
                 .build();
 
         return boardRepository.save(board);
