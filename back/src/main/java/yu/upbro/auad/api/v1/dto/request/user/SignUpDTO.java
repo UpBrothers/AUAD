@@ -3,6 +3,7 @@ package yu.upbro.auad.api.v1.dto.request.user;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import yu.upbro.auad.api.v1.entity.type.UserType;
 
 @Data
 @ApiModel("회원가입 DTO")
@@ -18,5 +19,5 @@ public class SignUpDTO {
     String name;
 
     @ApiModelProperty(name="type", notes = "사용자 유형")
-    String type;
+    UserType type;
 }

@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      uri : mongodb://auad:159486@13.124.22.116:27017/auad?authSource=admin
+#      uri:mongodb://auad:159486@mongo:27017/auad?authSource=admin
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+      location: /home/auad/iamges # Linux setting

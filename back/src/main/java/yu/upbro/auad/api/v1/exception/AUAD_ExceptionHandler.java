@@ -6,12 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import yu.upbro.auad.api.v1.controller.TestController;
 
 @RestControllerAdvice
 public class AUAD_ExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AUAD_ExceptionHandler.class);
 
     @ExceptionHandler
     public ResponseEntity<ExceptionModel> ExceptionHandler(BadRequestException e){
