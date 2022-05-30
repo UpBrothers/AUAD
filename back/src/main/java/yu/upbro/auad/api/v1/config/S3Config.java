@@ -1,4 +1,4 @@
-package yu.upbro.auad.config;
+package yu.upbro.auad.api.v1.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
