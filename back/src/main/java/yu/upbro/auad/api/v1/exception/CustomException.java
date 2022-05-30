@@ -1,8 +1,8 @@
 package yu.upbro.auad.api.v1.exception;
 
-public class BadRequestException extends RuntimeException{
+public class CustomException extends RuntimeException{
     public ErrorEnum errorEnum;
-    public BadRequestException(ErrorEnum errorEnum){
+    public CustomException(ErrorEnum errorEnum){
         super(errorEnum.getMessage());
         this.errorEnum = errorEnum;
     }

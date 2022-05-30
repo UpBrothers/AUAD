@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import yu.upbro.auad.api.v1.dto.request.board.BoardUpdateDTO;
 import yu.upbro.auad.api.v1.entity.Board;
-import yu.upbro.auad.api.v1.exception.BadRequestException;
 import yu.upbro.auad.api.v1.service.BoardService;
-import yu.upbro.auad.api.v1.util.S3Uploader;
+import yu.upbro.auad.api.v1.utils.S3Uploader;
 
 import java.io.IOException;
 import java.util.Date;
@@ -28,7 +26,7 @@ public class BoardController {
     private final S3Uploader s3Uploader;
 
     @Autowired
-    public BoardController(BoardService boardService,S3Uploader s3Uploader){
+    public BoardController(BoardService boardService, S3Uploader s3Uploader){
         this.boardService = boardService;
         this.s3Uploader = s3Uploader;
     }
