@@ -1,10 +1,43 @@
 spring:
+  application:
+    name: auad
+  profiles:
+    active: hwaning-mac
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIATL4BPJAU6GWXWNHG
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    s3:
+      bucket: auad
+    stack:
+      auto: false
+---
+spring:
+  config:
+    activate:
+      on-profile: hwaning-mac
   data:
     mongodb:
-      uri : mongodb://auad:159486@13.124.22.116:27017/auad?authSource=admin
-#      uri:mongodb://auad:159486@mongo:27017/auad?authSource=admin
+      uri: mongodb://auad:159486@13.124.22.116:27017/auad?authSource=admin
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 50MB
-      location: /home/auad/iamges # Linux setting
+      location: /Users/hwaning1/auad_images
+---
+spring:
+  config:
+    activate:
+      on-profile: aws-linux
+  data:
+    mongodb:
+      uri: mongodb://auad:159486@mongo:27017/auad?authSource=admin
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+      location: /home/ubuntu/auad_images
