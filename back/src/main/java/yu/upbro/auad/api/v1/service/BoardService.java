@@ -45,7 +45,7 @@ public class BoardService {
         User user = userRepository.findByStudentId(boardUpdateDTO.getStudentId())
                 .orElseThrow(RuntimeException::new); // TODO NotFoundUser Exception Handling
 
-        if(user.getType() != UserType.ADMIN)
+        if(user.getUserType() != UserType.ADMIN)
             throw new RuntimeException(); // ForbiddenException
 
         Board board = Board.builder()

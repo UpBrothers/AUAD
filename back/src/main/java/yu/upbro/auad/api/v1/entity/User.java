@@ -16,6 +16,6 @@ public class User {
     private String _id;
     private String studentId;
     private String pwd;
-    private UserType type;
     private String name;
+    private UserType userType;
 }

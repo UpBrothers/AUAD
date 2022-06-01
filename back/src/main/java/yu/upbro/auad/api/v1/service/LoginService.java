@@ -8,7 +8,7 @@ import yu.upbro.auad.api.v1.controller.LoginController;
 import yu.upbro.auad.api.v1.dto.request.user.SignInDTO;
 import yu.upbro.auad.api.v1.dto.request.user.SignUpDTO;
 import yu.upbro.auad.api.v1.entity.User;
-import yu.upbro.auad.api.v1.exception.BadRequestException;
+import yu.upbro.auad.api.v1.exception.CustomException;
 import yu.upbro.auad.api.v1.exception.ErrorEnum;
 import yu.upbro.auad.api.v1.repository.UserRepository;
 
@@ -27,7 +27,7 @@ public class LoginService {
         User user = userRepository.findByStudentId(signinDTO.getStudentId())
                 .orElseThrow(RuntimeException::new); // TODO 404 UserNotFound Exception
         if (!user.getPwd().equals(signinDTO.getPwd())){
-            throw new BadRequestException(ErrorEnum.TEST_ERROR); // TODO 401 Authentication Exception
+            throw new CustomException(ErrorEnum.TEST_ERROR); // TODO 401 Authentication Exception
         }
         return user;
     }
@@ -37,7 +37,7 @@ public class LoginService {
                 .name(signUpDTO.getName())
                 .studentId(signUpDTO.getStudentId())
                 .pwd(signUpDTO.getPwd()) // TODO pwd Encryption
-                .type(signUpDTO.getType())
+                .userType(signUpDTO.getType())
                 .build();
 
         return userRepository.save(user);
