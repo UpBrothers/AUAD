@@ -15,6 +15,7 @@ import yu.upbro.auad.api.v1.service.BoardService;
 import yu.upbro.auad.api.v1.utils.S3Uploader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class BoardController {
     private final S3Uploader s3Uploader;
 
     @Autowired
-    public BoardController(BoardService boardService, S3Uploader s3Uploader){
+    public BoardController(BoardService boardService , S3Uploader s3Uploader  ){
         this.boardService = boardService;
         this.s3Uploader = s3Uploader;
     }
@@ -76,6 +77,7 @@ public class BoardController {
             // TODO Exception Handling
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미지 업로드 실패");
         }
+        imageList.add("11.jpg");
         boardUpdateDTO.setImageLinks(imageList);
 
         Board board = boardService.insertBoard(boardUpdateDTO);
